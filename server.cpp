@@ -6,6 +6,8 @@
 #include "util.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+
 
 using namespace std;
 
@@ -14,7 +16,7 @@ KVStore db;
 //char *socket_path = "./socket";
 char *socket_path = "/tmp/db.tuples.sock";
 
-int main(int argc, char ** argv) {	
+int main(int argc, char * argv[]) {	
 	
 	int sflag = 0;
 	int opt;
@@ -23,13 +25,22 @@ int main(int argc, char ** argv) {
 		cout <<argv[1];
 		if ( s.compare( argv[1]) == 0){//condición de cambio de ruta
 			//we
+
+	/*if (argc > 1){
+		cout <<argv[1];
+		if ( s.compare( argv[1]) == 0){//condición de cambio de ruta
+			*socket_path = *argv[2];
+>>>>>>> abac5f3e4b271c739e6dd497885678cb7c470c32
 			cout<< "\nRuta De escucha acualizada, ahora sera: "<< *socket_path <<endl;
 		}
 		else{
 			//ruta = /tmp/db.tuples.sock
 			cout<< "\nruta invalida, se mantiene la original"<<endl;
 		}	
+<<<<<<< HEAD
 	}
+=======
+	}*/
 
 	
 
@@ -44,7 +55,14 @@ int main(int argc, char ** argv) {
 				return EXIT_FAILURE;
           		}	    	
     		}
-	
+
+	if (sflag == 1){
+		char *socket_path = argv[2];
+		cout<< "\nRuta De escucha acualizada, ahora sera: " << socket_path<<endl;
+		//paso ya el flag del -s
+		}
+	cout<<"SSS"<<endl;
+
 	// Uso elemental del almacenamiento KV:
 	
 	// Creamos un arreglo de bytes a mano
