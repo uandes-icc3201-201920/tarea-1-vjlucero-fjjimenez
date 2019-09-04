@@ -10,4 +10,4 @@ server: server.cpp
 	$(CC) -o server server.cpp $(CFLAGS)
 
 clean:
-	rm client server *.o
+	rm -f client server *.o
