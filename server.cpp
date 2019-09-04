@@ -19,7 +19,7 @@ char *socket_path = "/tmp/db.tuples.sock";
 
 int main(int argc, char * argv[]) {	
 	  struct sockaddr_un addr;
-  	string buf;
+  	char buf[100];
   	int fd,cl,rc;
 	int sflag = 0;
 	int opt;
@@ -81,7 +81,6 @@ int main(int argc, char * argv[]) {
 			}
 
 		while ( (rc=read(cl,buf,sizeof(buf))) > 0) {
-			cout<<"s"<<strcmp(buf,"quit")<<endl;
 		    	if(buf == "quit"){
 		    		return 0;
 				}
