@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
 		}
 		
 		if( cmd == "list"){
-			if( send(fd, cmd) == -1){
+			if( write(fd, cmd) == -1){
 				perror("Failed list request")
 			}
 			//comando para que el client espere respuesta del servidor aqui
@@ -101,35 +101,35 @@ int main(int argc, char** argv) {
 				string value, key;
 			}
 		
-			//if( send(fd, ) == -1){
+			//if( write(fd, ) == -1){
 			//	perror("Failed insert request")
 			//}
 			//comando para que el client espere respuesta del servidor aqui
 		}
 		
 		if( cmd.find("get")==0) {
-			//if( send(fd, ) == -1){
+			//if( write(fd, ) == -1){
 			//	perror("Failed get request")
 			//}
 			//comando para que el client espere respuesta del servidor aqui
 		}
 		
 		if(cmd.find("peek")==0){
-			//if( send(fd, ) == -1){
+			//if( write(fd, ) == -1){
 			//	perror("Failed peek request")
 			//}
 			//comando para que el client espere respuesta del servidor aqui
 		}
 		
 		if(cmd.find("update")==0){
-			//if( send(fd, ) == -1){
+			//if( write(fd, ) == -1){
 			//	perror("Failed update request")
 			//}
 			//comando para que el client espere respuesta del servidor aqui
 		}
 		
 		if(cmd.find("delete")==0) {
-			//if( send(fd, ) == -1){
+			//if( write(fd, ) == -1){
 			//	perror("Failed delete request")
 			//}
 			//comando para que el client espere respuesta del servidor aqui
