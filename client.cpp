@@ -45,16 +45,16 @@ int main(int argc, char** argv) {
 		cin >> cmd;
 		
 		if( cmd == "connect"){
-			cout << "Indique ruta del socket\n";
+			cout << "Indique ruta del socket (indique con una 'd' si quiere la ruta por defecto)\n";
 			cin >> ruta;
-			if (ruta == "a")
+			if (ruta[0] == 'd' and ruta[1]== 0)
 			{
 				cout << "su ruta es: /tmp/db.tuples.sock\n" ;
 				socket_path = "/tmp/db.tuples.sock";
 				
 			}
 			else {
-				cout << "su ruta es: /tmp/db.tuples.sock\n" ;
+				cout << "su ruta es: " << ruta << "\n" ;
 				socket_path = ruta;
 			}
 			pthread_t time;
