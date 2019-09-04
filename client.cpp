@@ -14,6 +14,7 @@
 
 using namespace std;
 
+char *socket_path = "/tmp/db.tuples.sock";
 
 void* timer(void* finish) {
 	 //auto Start = chrono::high_resolution_clock::now();
@@ -30,11 +31,9 @@ void* timer(void* finish) {
 
 
 int main(int argc, char** argv) {
-	char *socket_path = "\0hidden";
 	struct sockaddr_un addr;
 	int timer_finish = 0;
-	int connected = 0;
-	int fd, rc; 
+	int fd; 
 	string cmd = "";
 	char buffer[100];
 	

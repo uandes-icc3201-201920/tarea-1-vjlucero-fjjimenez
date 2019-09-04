@@ -1,18 +1,13 @@
-# TODO: Crear el Makefile...
-CFLAGS = -g
-ASCIIDOC=/usr/bin/asciidoc
-DOC = Unix_domain_sockets.html
-PROGS = client server
+CC=g++
+CFLAGS= -Wall -lm -lpthread -std=c++11
 
-all: $(PROGS) $(DOC)
+all: client server
 
-server: server.cpp
 client: client.cpp
-
-Unix_domain_sockets.html: Unix_domain_sockets.txt
-	if [ -x $(ASCIIDOC) ]; then $(ASCIIDOC) $<; fi
-
-.PHONY: clean
+	$(CC) -o client client.cpp $(CFLAGS)
+	
+server: server.cpp
+	$(CC) -o server server.cpp $(CFLAGS)
 
 clean:
-	rm -f *.o socket $(PROGS)
+	rm client server *.o
