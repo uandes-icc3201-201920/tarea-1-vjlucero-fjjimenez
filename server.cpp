@@ -4,29 +4,46 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include "util.h"
+#include <string.h>
+#include <stdlib.h>
 
 using namespace std;
 
 // Almacenamiento KV
 KVStore db;
+//char *socket_path = "./socket";
+char *socket_path = "/tmp/db.tuples.sock";
 
-int main(int argc, char** argv) {	
+int main(int argc, char ** argv) {	
 	
 	int sflag = 0;
 	int opt;
+	string s = "-s";
+	if (argc > 1){
+		cout <<argv[1];
+		if ( s.compare( argv[1]) == 0){//condición de cambio de ruta
+			//we
+			cout<< "\nRuta De escucha acualizada, ahora sera: "<< *socket_path <<endl;
+		}
+		else{
+			//ruta = /tmp/db.tuples.sock
+			cout<< "\nruta invalida, se mantiene la original"<<endl;
+		}	
+	}
+
 	
+
 	// Procesar opciones de linea de comando
-    while ((opt = getopt (argc, argv, "s:")) != -1) {
-        switch (opt)
-		{
+    	while ((opt = getopt (argc, argv, "s:")) != -1) {
+		switch (opt){
 			/* Procesar el flag s si el usuario lo ingresa */
 			case 's':
 				sflag = 1;
 				break;
 			default:
 				return EXIT_FAILURE;
-          }	    	
-    }
+          		}	    	
+    		}
 	
 	// Uso elemental del almacenamiento KV:
 	
