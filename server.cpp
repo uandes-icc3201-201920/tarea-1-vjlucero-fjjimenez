@@ -40,16 +40,16 @@ int main(int argc, char * argv[]) {
 			/* Procesar el flag s si el usuario lo ingresa */
 			case 's':
 				sflag = 1;
-				cout<<"WEEEENA"<<endl;
 				break;
 			default:
 				return EXIT_FAILURE;
           		}	    	
     		}
+
 	if (sflag == 1){
-		cout<<*argv<<endl;		
-		//*socket_path = *argv[2];
-		cout<< "\nRuta De escucha acualizada, ahora sera: " <<endl;
+		char *socket_path = argv[2];
+		cout<< "\nRuta De escucha acualizada, ahora sera: " << socket_path<<endl;
+		//paso ya el flag del -s
 		}
 	cout<<"SSS"<<endl;
 	// Uso elemental del almacenamiento KV:
