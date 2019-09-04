@@ -81,8 +81,10 @@ int main(int argc, char * argv[]) {
 			}
 
 		while ( (rc=read(cl,buf,sizeof(buf))) > 0) {
-		    	if(buf == "quit"){
-		    		return 0;
+			//Desde aca instrucciones de llegada
+			cout<<buf<<endl;//raro
+			if (strcmp(buf,"list\0")==0){
+				cout<<"lista bitches"<<endl;
 				}
  			printf("read %u bytes: %.*s\n", rc, rc, buf);
 			}
@@ -91,10 +93,10 @@ int main(int argc, char * argv[]) {
       		perror("read");
       		exit(-1);
     			}
-    		else if (rc == 0) {
-		cout<<"cierre"<<endl;
+    		else if (rc == 0) {//caso quit
       		printf("EOF\n");
       		close(cl);
+		return 0;
     			}
   		}
 
