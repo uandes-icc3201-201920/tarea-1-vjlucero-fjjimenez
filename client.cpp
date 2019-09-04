@@ -8,13 +8,14 @@
 #include <thread>
 #include <chrono>
 #include <stdio.h>
+#include <pthread.h>
 
 
 
 
 using namespace std;
 
-char *socket_path = "/tmp/db.tuples.sock";
+char *socket_path = "\0hidden";
 
 void* timer(void* finish) {
 	 //auto Start = chrono::high_resolution_clock::now();
@@ -32,39 +33,46 @@ void* timer(void* finish) {
 
 int main(int argc, char** argv) {
 	struct sockaddr_un addr;
+	string by_default = "/tmp/db.tuples.sock";
 	int timer_finish = 0;
 	int fd; 
 	string cmd = "";
 	char buffer[100];
+	char ruta[100];
 	
 	while (cmd != "quit") {
 		cout << ">";
 		cin >> cmd;
 		
 		if( cmd == "connect"){
-			cout << "Indique ruta del socket";
-			cout << ">";
-			cin >> socket_path;
-			if (socket_path == "")
+			cout << "Indique ruta del socket\n";
+			cin >> ruta;
+			if (ruta == "a")
 			{
+				cout << "su ruta es: /tmp/db.tuples.sock\n" ;
 				socket_path = "/tmp/db.tuples.sock";
+				
+			}
+			else {
+				cout << "su ruta es: /tmp/db.tuples.sock\n" ;
+				socket_path = ruta;
 			}
 			pthread_t time;
 			pthread_create(&time,NULL,&timer,(void*)&timer_finish);
 			if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1){
-				cout << "socket error";
+				cout << "socket error\n";
 				continue;
 			}
 			if (timer_finish == 1)
 			{
-				cout << "Out of Time";
+				cout << "Out of Time\n";
 				timer_finish = 0;
 				continue;
 			}
 			
 			memset(&addr, 0, sizeof(addr));
 			addr.sun_family = AF_UNIX; //serv_addr.sin_family en geeks
-			if (socket_path == "\0") { // este if podria ser el equivalente al if(inet pron...)
+			if (*socket_path == '\0') { // este if podria ser el equivalente al if(inet pron...)
 				*addr.sun_path = '\0'; //serv_addr.sin_port en geeks
 				strncpy(addr.sun_path+1, socket_path+1, sizeof(addr.sun_path)-2);
 			} else {
@@ -73,13 +81,13 @@ int main(int argc, char** argv) {
   			
   			if (timer_finish == 1)
 			{
-				cout << "Out of Time";
+				cout << "Out of Time\n";
 				timer_finish = 0;
 				continue;
 			}
 
   			if (connect(fd, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
-    			cout << "connect error";
+    			cout << "connect error\n";
     			continue;
   			}
   			
