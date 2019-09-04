@@ -8,12 +8,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 using namespace std;
 
 // Almacenamiento KV
 KVStore db;
 //char *socket_path = "./socket";
-char *socket_path = "\0hidden";
+char *socket_path = "/tmp/db.tuples.sock";
 
 int main(int argc, char * argv[]) {	
 	  struct sockaddr_un addr;
@@ -22,6 +23,8 @@ int main(int argc, char * argv[]) {
 	int sflag = 0;
 	int opt;
 	string s = "-s";
+	if (argc > 1){
+		cout <<argv[1];
 
 	// Procesar opciones de linea de comando
     	while ((opt = getopt (argc, argv, "s:")) != -1) {
@@ -41,6 +44,9 @@ int main(int argc, char * argv[]) {
 		cout<< "\nRuta De escucha acualizada, ahora sera: " << socket_path<<endl;
 		//paso ya el flag del -s
 		}
+
+	cout<<"SSS"<<endl;
+
 	if ( (fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1) {
 		perror("socket error");
 		exit(-1);
@@ -87,6 +93,7 @@ int main(int argc, char * argv[]) {
       		close(cl);
     			}
   		}
+
 
 	// Uso elemental del almacenamiento KV:
 	
