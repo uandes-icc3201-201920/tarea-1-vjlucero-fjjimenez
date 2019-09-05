@@ -14,6 +14,9 @@ Informe de la Tarea 1:
 *No implementado:
 	- No esta implementado el manejor de errores en caso de se envien comandos incompletos, como por ejemplo update(key) en vez de update(key,value)
 	- listen del cliente ante las respuestas del usuario.
+	- procesar key y value para guardarlos en la base de datos.
+	- generar un valor aleatorio si key llega vacio 
 	
 *Problemas conocidos:
 	- El temporizador a pesar de estar implementado, no siempre realiza su correcta funcion, puede ser debido al mal uso del thread y de la recepcion de su finalización. 
+	- aparecen caracteres extra al momento de recibir los valores en el servidor 
