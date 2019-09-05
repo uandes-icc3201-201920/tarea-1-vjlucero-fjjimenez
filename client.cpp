@@ -94,7 +94,9 @@ int main(int argc, char** argv) {
 		if( cmd == "disconnect"){
 			close(fd);
 			cout << "Usted se a desconectado del servidor\n";
-			fd = -1;
+			strcpy(buffer, cmd.c_str());
+			send(fd, buffer, strlen(buffer), 0);
+			fd = NULL;
 			continue;
 		}
 		
@@ -106,14 +108,15 @@ int main(int argc, char** argv) {
 		}
 		
 		if( cmd.find("insert") == 0){
-		
+			strcpy(buffer, cmd.c_str());
+			char insert[2][20];
 			if( cmd.find(",") == 0){
-				string value, key;
+				
+			} else {
+				
 			}
 		
-			//if( write(fd, ) == -1){
-			//	perror("Failed insert request")
-			//}
+			
 			//comando para que el client espere respuesta del servidor aqui
 		}
 		
