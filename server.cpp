@@ -82,14 +82,14 @@ int main(int argc, char * argv[]) {
 		while ( (rc=read(cl,buf,sizeof(buf))) > 0) {
 			string buf2;
 			//cout << " tamano es : " << strlen(buf)<<endl;
-			for(int i =0;i<strlen(buf)-2;i++){
+			for(int i =0;i<strlen(buf);i++){
 				buf2 +=buf[i];
 				//cout<<buf2<<endl; 
 				}
 			//cout<<"buf2"<<buf2<<endl; 
 			//Desde aca instrucciones de llegada
-			cout<<buf2<<endl;//usar el buf normal nos da caracteres extra
-			if(buf2 == "list"){
+			cout<<buf<<endl;//usar el buf normal nos da caracteres extra
+			if(!buf2.find("list")){
 				
 				cmd+= "Entramos a lista";
 				cout<<cmd<<endl;
@@ -97,16 +97,17 @@ int main(int argc, char * argv[]) {
 				send(fd, buffer_salida, strlen(buffer_salida), 0);
 				cmd = "";
 				}
-			if(buf2 == "insert"){
+			else if(!buf2.find("insert")){
+				cout<<"estamos aca"<< endl;
 				string bkey;
 				string bvalue;
 				read(cl,buf,sizeof(buf));//recepcion del key
-				for(int i =0;i<strlen(buf)-2;i++){
+				for(int i =0;i<strlen(buf);i++){
 					bkey +=buf[i];
 					}
 					
 				read(cl,buf,sizeof(buf));//recepcion del value
-				for(int i =0;i<strlen(buf)-2;i++){
+				for(int i =0;i<strlen(buf);i++){
 					bvalue +=buf[i];
 					}	
 				cout<<"Buf key: "<<bkey<<" Bvalue: " <<bvalue<<endl;
