@@ -101,8 +101,9 @@ int main(int argc, char** argv) {
 		}
 		
 		if( cmd == "list"){
-			strcpy(buffer, cmd.c_str());
-			if(send(fd, buffer, strlen(buffer), 0) == -1){
+			char * comand;
+			strcpy(comand, cmd.c_str());
+			if(send(fd, comand, strlen(comand), 0) == -1){
 				cout << "Error al enviar mensaje\n";
 			}
 			//comando para que el client espere respuesta del servidor aqui
@@ -142,9 +143,9 @@ int main(int argc, char** argv) {
 				cout << "Error al enviar mensaje\n";
 			} else {
 				sleep(1000);
-				send(fd, key, strlen(comand), 0);
+				send(fd, key, strlen(key), 0);
 				sleep(1000);
-				send(fd, value, strlen(comand), 0);
+				send(fd, value, strlen(value), 0);
 			}
 			
 		
@@ -186,9 +187,9 @@ int main(int argc, char** argv) {
 			if( send(fd, comand, strlen(comand), 0) == -1){
 				cout << "Error al enviar mensaje\n";
 			} else {
-				sleep(1);
+				sleep(1000);
 				send(fd, key, strlen(key), 0);
-				sleep(1);
+				sleep(1000);
 				send(fd, value, strlen(value), 0);
 			}
 			//comando para que el client espere respuesta del servidor aqui
