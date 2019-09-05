@@ -12,7 +12,7 @@ Informe de la Tarea 1:
 	- 
 
 *No implementado:
-	- 	
+	- No esta implementado el manejor de errores en caso de se envien comandos incompletos, como por ejemplo update(key) en vez de update(key,value)
 	
 *Problemas conocidos:
 	-

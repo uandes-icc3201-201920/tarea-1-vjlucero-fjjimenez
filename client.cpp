@@ -115,19 +115,36 @@ int main(int argc, char** argv) {
 			char * comand;
 			char * key;
 			char * value;
-			temp = strtok(buffer, "(");
-			comand = temp;
-			temp = strtok(NULL, ",");
-			key = temp;
-			temp = strtok(NULL, ")");
-			value = temp;
+			int key_exist = 0;
+			for(int i=0; i<sizeof(buffer); i++){
+				if(buffer[i] == ','){
+					key_exist = 1;
+					break;
+				}
+			}
+			if(key_exist == 1){
+				temp = strtok(buffer, "(");
+				comand = temp;
+				temp = strtok(NULL, ",");
+				key = temp;
+				temp = strtok(NULL, ")");
+				value = temp;
+			} else {
+				temp = strtok(buffer, "(");
+				comand = temp;
+				key = "NONE";
+				temp = strtok(NULL, ")");
+				value = temp;
+			}
+			
+			cout << key << "\n";
 			if( send(fd, comand, strlen(comand), 0) == -1){
 				cout << "Error al enviar mensaje\n";
 			} else {
 				sleep(1);
-				send(fd, key, strlen(comand), 0);
+				send(fd, key, strlen(key), 0);
 				sleep(1);
-				send(fd, value, strlen(comand), 0);
+				send(fd, value, strlen(value), 0);
 			}
 			
 		
@@ -135,33 +152,48 @@ int main(int argc, char** argv) {
 			//comando para que el client espere respuesta del servidor aqui
 		}
 		
-		if( cmd.find("get")==0) {
-			//if( write(fd, ) == -1){
-			//	perror("Failed get request")
-			//}
-			//comando para que el client espere respuesta del servidor aqui
-		}
-		
-		if(cmd.find("peek")==0){
-			//if( write(fd, ) == -1){
-			//	perror("Failed peek request")
-			//}
+		if( cmd.find("get")==0 or cmd.find("peek")==0 or cmd.find("delete")==0) {
+			strcpy(buffer, cmd.c_str());
+			char * temp;
+			char * comand;
+			char * key;
+			temp = strtok(buffer, "(");
+			comand = temp;
+			temp = strtok(NULL, ",");
+			key = temp;
+			cout << key << "\n";
+			if( send(fd, comand, strlen(comand), 0) == -1){
+				cout << "Error al enviar mensaje\n";
+			} else {
+				sleep(1);
+				send(fd, key, strlen(key), 0);
+			}
 			//comando para que el client espere respuesta del servidor aqui
 		}
 		
 		if(cmd.find("update")==0){
-			//if( write(fd, ) == -1){
-			//	perror("Failed update request")
-			//}
+			strcpy(buffer, cmd.c_str());
+			char * temp;
+			char * comand;
+			char * key;
+			char * value;
+			temp = strtok(buffer, "(");
+			comand = temp;
+			temp = strtok(NULL, ",");
+			key = temp;
+			temp = strtok(NULL, ")");
+			value = temp;			
+			if( send(fd, comand, strlen(comand), 0) == -1){
+				cout << "Error al enviar mensaje\n";
+			} else {
+				sleep(1);
+				send(fd, key, strlen(key), 0);
+				sleep(1);
+				send(fd, value, strlen(value), 0);
+			}
 			//comando para que el client espere respuesta del servidor aqui
 		}
 		
-		if(cmd.find("delete")==0) {
-			//if( write(fd, ) == -1){
-			//	perror("Failed delete request")
-			//}
-			//comando para que el client espere respuesta del servidor aqui
-		}
 	}
 
 	return 0;	
