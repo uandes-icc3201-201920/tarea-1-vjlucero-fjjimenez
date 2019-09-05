@@ -6,7 +6,6 @@
 #include <sys/un.h>
 #include "util.h"
 #include <thread>
-#include <chrono>
 #include <stdio.h>
 #include <pthread.h>
 
@@ -16,31 +15,28 @@
 using namespace std;
 
 char *socket_path = "\0hidden";
+int timer_finish = 0;
 
-void* timer(void* finish) {
-	 //auto Start = chrono::high_resolution_clock::now();
-	//		while(1)
-		//	{
-			//	auto End = chrono::high_resolution_clock::now();
-				//chrono::duration<double, milli> Elapsed = End - Start;
-				//if (Elapsed.count() >= 10000.0)
-				//	break;
-			//}
-			//finish = 1;
-			return NULL;
+void *timer(void *t) {
+			sleep(10);
+			timer_finish = 1;
 }
 
 
 int main(int argc, char** argv) {
 	struct sockaddr_un addr;
 	string by_default = "/tmp/db.tuples.sock";
-	int timer_finish = 0;
-	int fd; 
+	int fd, in; 
 	string cmd = "";
-	char buffer[100];
-	char ruta[100];
+	char buffer[1000];
+	char ruta[1000];
 	
 	while (cmd != "quit") {
+		if (in == 1){
+			cout << "Estado: Conectado al servidor\n";
+		} else {
+			cout << "Estado: Desconectado\n";
+		}
 		cout << ">";
 		cin >> cmd;
 		
@@ -58,7 +54,7 @@ int main(int argc, char** argv) {
 				socket_path = ruta;
 			}
 			pthread_t time;
-			pthread_create(&time,NULL,&timer,(void*)&timer_finish);
+			pthread_create(&time,NULL,&timer,(void *)1);
 			if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1){
 				cout << "socket error\n";
 				continue;
@@ -71,9 +67,9 @@ int main(int argc, char** argv) {
 			}
 			
 			memset(&addr, 0, sizeof(addr));
-			addr.sun_family = AF_UNIX; //serv_addr.sin_family en geeks
-			if (*socket_path == '\0') { // este if podria ser el equivalente al if(inet pron...)
-				*addr.sun_path = '\0'; //serv_addr.sin_port en geeks
+			addr.sun_family = AF_UNIX; 
+			if (*socket_path == '\0') { 
+				*addr.sun_path = '\0'; 
 				strncpy(addr.sun_path+1, socket_path+1, sizeof(addr.sun_path)-2);
 			} else {
 				strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path)-1);
@@ -90,13 +86,15 @@ int main(int argc, char** argv) {
     			cout << "connect error\n";
     			continue;
   			}
-  			
-  			cout << "Conectado al servidor";
+  			in = 1;
+  			cout << "Conectado al servidor\n";
 			
 		}
 		
 		if( cmd == "disconnect"){
 			close(fd);
+			cout << "Usted se a desconectado del servidor\n";
+			fd = -1;
 			continue;
 		}
 		
