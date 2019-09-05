@@ -104,13 +104,13 @@ int main(int argc, char * argv[]) {
 				string bkey;
 				string bvalue;
 				read(cl,keyy,sizeof(keyy));//recepcion del key
-				for(int i =0;i<strlen(buf);i++){
-					bkey +=buf[i];
+				for(int i =0;i<strlen(keyy);i++){
+					bkey +=keyy[i];
 					}
 					
 				read(cl,vvalue,sizeof(vvalue));//recepcion del value
-				for(int i =0;i<strlen(buf);i++){
-					bvalue +=buf[i];
+				for(int i =0;i<strlen(vvalue);i++){
+					bvalue +=vvalue[i];
 					}	
 				cout<<"Buf key: "<<bkey<<" Bvalue: " <<bvalue<<endl;
 				}
