@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 
 
 using namespace std;
@@ -79,13 +80,22 @@ int main(int argc, char * argv[]) {
 			perror("accept error");
 			continue;
 			}
-
 		while ( (rc=read(cl,buf,sizeof(buf))) > 0) {
+			string buf2;
+			cout << " tamano es : " << strlen(buf)<<endl;
+			for(int i =0;i<strlen(buf)-2;i++){
+				buf2 +=buf[i];
+				cout<<buf2<<endl; 
+				}
+			cout<<"buf2"<<buf2<<endl; 
 			//Desde aca instrucciones de llegada
 			cout<<buf<<endl;//raro
-			if (strcmp(buf,"list\0")==0){
+			//cout<<comando<<strcmp("list",buf)<<endl;
+			//if (strcmp("list",buf)==0){
+			if(buf2=="list"){
 				cout<<"lista bitches"<<endl;
 				}
+			printf("wea %c",buf);
  			printf("read %u bytes: %.*s\n", rc, rc, buf);
 			}
 		if (rc == -1) {
@@ -93,10 +103,9 @@ int main(int argc, char * argv[]) {
       		perror("read");
       		exit(-1);
     			}
-    		else if (rc == 0) {//caso quit
+    		else if (rc == 0) {
       		printf("EOF\n");
       		close(cl);
-		return 0;
     			}
   		}
 
