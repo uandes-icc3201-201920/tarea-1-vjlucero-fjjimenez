@@ -19,12 +19,14 @@ KVStore db;
 char *socket_path = "/tmp/db.tuples.sock";
 
 int main(int argc, char * argv[]) {	
-	  struct sockaddr_un addr;
+	struct sockaddr_un addr;
   	char buf[100];
   	int fd,cl,rc;
 	int sflag = 0;
 	int opt;
 	string s = "-s";
+	char buffer_salida[1000];
+	string cmd = "";
 
 
 	// Procesar opciones de linea de comando
@@ -63,48 +65,45 @@ int main(int argc, char * argv[]) {
 			}
 
 	if (bind(fd, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
-		cout<<"Error de bind"<<endl;
 		perror("bind error");
 		exit(-1);
 		}
 
 	if (listen(fd, 5) == -1) {
-		cout<<"Error de listen"<<endl;
 		perror("listen error");
 		exit(-1);
 		}
 
 	while (1) {
 		if ( (cl = accept(fd, NULL, NULL)) == -1) {
-			cout<<"Error"<<endl;
 			perror("accept error");
 			continue;
 			}
 		while ( (rc=read(cl,buf,sizeof(buf))) > 0) {
 			string buf2;
-			cout << " tamano es : " << strlen(buf)<<endl;
+			//cout << " tamano es : " << strlen(buf)<<endl;
 			for(int i =0;i<strlen(buf)-2;i++){
 				buf2 +=buf[i];
-				cout<<buf2<<endl; 
+				//cout<<buf2<<endl; 
 				}
-			cout<<"buf2"<<buf2<<endl; 
+			//cout<<"buf2"<<buf2<<endl; 
 			//Desde aca instrucciones de llegada
-			cout<<buf<<endl;//raro
-			//cout<<comando<<strcmp("list",buf)<<endl;
-			//if (strcmp("list",buf)==0){
-			if(buf2=="list"){
-				cout<<"lista bitches"<<endl;
+			cout<<buf2<<endl;//usar el buf normal nos da caracteres extra
+			if(buf2 == "list"){
+				
+				cmd+= "Entramos a lista";
+				cout<<cmd<<endl;
+				strcpy(buffer_salida, cmd.c_str());
+				send(fd, buffer_salida, strlen(buffer_salida), 0);
+				cmd = "";
 				}
-			printf("wea %c",buf);
- 			printf("read %u bytes: %.*s\n", rc, rc, buf);
 			}
 		if (rc == -1) {
-		cout<<"Error de lectura"<<endl;
       		perror("read");
       		exit(-1);
     			}
     		else if (rc == 0) {
-      		printf("EOF\n");
+      		printf("Se ha terminado conexion con el cliente\n");
       		close(cl);
     			}
   		}
