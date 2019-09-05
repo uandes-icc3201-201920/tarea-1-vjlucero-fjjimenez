@@ -59,7 +59,7 @@ int main(int argc, char * argv[]) {
 	if (*socket_path == '\0') {
 		*addr.sun_path = '\0';
 		strncpy(addr.sun_path+1, socket_path+1, sizeof(addr.sun_path)-2);
-	} else {
+		} else {
 		strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path)-1);
 		unlink(socket_path);
 			}
@@ -97,7 +97,21 @@ int main(int argc, char * argv[]) {
 				send(fd, buffer_salida, strlen(buffer_salida), 0);
 				cmd = "";
 				}
-			}
+			if(buf2 == "insert"){
+				string bkey;
+				string bvalue;
+				read(cl,buf,sizeof(buf));//recepcion del key
+				for(int i =0;i<strlen(buf)-2;i++){
+					bkey +=buf[i];
+					}
+					
+				read(cl,buf,sizeof(buf));//recepcion del value
+				for(int i =0;i<strlen(buf)-2;i++){
+					bvalue +=buf[i];
+					}	
+				cout<<"Buf key: "<<bkey<<" Bvalue: " <<bvalue<<endl;
+				}
+			}	
 		if (rc == -1) {
       		perror("read");
       		exit(-1);
