@@ -18,7 +18,7 @@ char *socket_path = "\0hidden";
 int timer_finish = 0;
 
 void *timer(void *t) {
-			sleep(10);
+			sleep(10000);
 			timer_finish = 1;
 }
 
@@ -124,9 +124,9 @@ int main(int argc, char** argv) {
 			if( send(fd, comand, strlen(comand), 0) == -1){
 				cout << "Error al enviar mensaje\n";
 			} else {
-				sleep(1);
+				sleep(1000);
 				send(fd, key, strlen(comand), 0);
-				sleep(1);
+				sleep(1000);
 				send(fd, value, strlen(comand), 0);
 			}
 			
