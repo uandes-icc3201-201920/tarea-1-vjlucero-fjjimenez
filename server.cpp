@@ -99,19 +99,22 @@ int main(int argc, char * argv[]) {
 				}
 			else if(!buf2.find("insert")){
 				cout<<"estamos aca"<< endl;
+				char keyy [100];
+				char vvalue [100];
 				string bkey;
 				string bvalue;
-				read(cl,buf,sizeof(buf));//recepcion del key
+				read(cl,keyy,sizeof(keyy));//recepcion del key
 				for(int i =0;i<strlen(buf);i++){
 					bkey +=buf[i];
 					}
 					
-				read(cl,buf,sizeof(buf));//recepcion del value
+				read(cl,vvalue,sizeof(vvalue));//recepcion del value
 				for(int i =0;i<strlen(buf);i++){
 					bvalue +=buf[i];
 					}	
 				cout<<"Buf key: "<<bkey<<" Bvalue: " <<bvalue<<endl;
 				}
+			buf[0] =0;
 			}	
 		if (rc == -1) {
       		perror("read");
