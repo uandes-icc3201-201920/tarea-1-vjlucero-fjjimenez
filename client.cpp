@@ -102,19 +102,34 @@ int main(int argc, char** argv) {
 		
 		if( cmd == "list"){
 			strcpy(buffer, cmd.c_str());
-			send(fd, buffer, strlen(buffer), 0);
+			if(send(fd, buffer, strlen(buffer), 0) == -1){
+				cout << "Error al enviar mensaje\n";
+			}
 			//comando para que el client espere respuesta del servidor aqui
 			
 		}
 		
 		if( cmd.find("insert") == 0){
 			strcpy(buffer, cmd.c_str());
-			char insert[2][20];
-			if( cmd.find(",") == 0){
-				
+			char * temp;
+			char * comand;
+			char * key;
+			char * value;
+			temp = strtok(buffer, "(");
+			comand = temp;
+			temp = strtok(NULL, ",");
+			key = temp;
+			temp = strtok(NULL, ")");
+			value = temp;
+			if( send(fd, comand, strlen(comand), 0) == -1){
+				cout << "Error al enviar mensaje\n";
 			} else {
-				
+				sleep(1);
+				send(fd, key, strlen(comand), 0);
+				sleep(1);
+				send(fd, value, strlen(comand), 0);
 			}
+			
 		
 			
 			//comando para que el client espere respuesta del servidor aqui
