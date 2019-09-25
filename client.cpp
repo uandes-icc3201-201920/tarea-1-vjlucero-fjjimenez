@@ -28,22 +28,30 @@ int main(int argc, char** argv) {
 	string by_default = "/tmp/db.tuples.sock";
 	int fd, in; 
 	string cmd = "";
+	int sent = 0;
 	char buffer[1000];
 	char ruta[1000];
 	
-	while (cmd != "quit") {
+	while (cmd != "quit" || cmd != "disconnect") {
 		if (in == 1){
 			cout << "Estado: Conectado al servidor\n";
 		} else {
 			cout << "Estado: Desconectado\n";
 		}
+		if(cmd == "quit"){
+			close(fd);
+			in=0;
+			return 0;
+			}
 		cout << ">";
 		cin >> cmd;
+		char const *char_cmd = cmd.c_str();
+		strcpy(buffer,cmd.c_str());
 		
 		if( cmd == "connect"){
 			cout << "Indique ruta del socket (indique con una 'd' si quiere la ruta por defecto)\n";
 			cin >> ruta;
-			if (ruta[0] == 'd' and ruta[1]== 0)
+			if (ruta[0] == 'd')
 			{
 				cout << "su ruta es: /tmp/db.tuples.sock\n" ;
 				socket_path = "/tmp/db.tuples.sock";
@@ -65,7 +73,7 @@ int main(int argc, char** argv) {
 				timer_finish = 0;
 				continue;
 			}
-			
+			timer_finish = 0;
 			memset(&addr, 0, sizeof(addr));
 			addr.sun_family = AF_UNIX; 
 			if (*socket_path == '\0') { 
@@ -82,121 +90,28 @@ int main(int argc, char** argv) {
 				continue;
 			}
 
-  			if (connect(fd, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
+  			if (connect(fd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
     			cout << "connect error\n";
     			continue;
   			}
   			in = 1;
   			cout << "Conectado al servidor\n";
-			
+		continue;	
 		}
 		
-		if( cmd == "disconnect"){
+		else if( cmd == "disconnect"){
 			close(fd);
 			cout << "Usted se a desconectado del servidor\n";
-			strcpy(buffer, cmd.c_str());
-			send(fd, buffer, strlen(buffer), 0);
+			char const *char_cmd = cmd.c_str();
+			sent = send(fd, char_cmd, strlen(char_cmd), 0);
 			fd = NULL;
+			in = 0;
 			continue;
 		}
 		
-		if( cmd == "list"){
-			strcpy(buffer, cmd.c_str());
-			char * temp;
-			char * comand;
-			temp = strtok(buffer, "\n");
-			comand = temp;
-			if(send(fd, comand, strlen(comand), 0) == -1){
-				cout << "Error al enviar mensaje\n";
-			}
-			//comando para que el client espere respuesta del servidor aqui
-			
-		}
 		
-		if( cmd.find("insert") == 0){
-			strcpy(buffer, cmd.c_str());
-			char * temp;
-			char * comand;
-			char * key;
-			char * value;
-			int key_exist = 0;
-			for(int i=0; i<sizeof(buffer); i++){
-				if(buffer[i] == ','){
-					key_exist = 1;
-					break;
-				}
-			}
-			if(key_exist == 1){
-				temp = strtok(buffer, "(");
-				comand = temp;
-				temp = strtok(NULL, ",");
-				key = temp;
-				temp = strtok(NULL, ")");
-				value = temp;
-			} else {
-				temp = strtok(buffer, "(");
-				comand = temp;
-				key = "NONE";
-				temp = strtok(NULL, ")");
-				value = temp;
-			}
-			
-			cout << key << "\n";
-			if( send(fd, comand, strlen(comand), 0) == -1){
-				cout << "Error al enviar mensaje\n";
-			} else {
-				sleep(1000);
-				send(fd, key, strlen(key), 0);
-				sleep(1000);
-				send(fd, value, strlen(value), 0);
-			}
-			
+		send(fd, char_cmd, strlen(char_cmd), 0);
 		
-			
-			//comando para que el client espere respuesta del servidor aqui
-		}
-		
-		if( cmd.find("get")==0 or cmd.find("peek")==0 or cmd.find("delete")==0) {
-			strcpy(buffer, cmd.c_str());
-			char * temp;
-			char * comand;
-			char * key;
-			temp = strtok(buffer, "(");
-			comand = temp;
-			temp = strtok(NULL, ",");
-			key = temp;
-			cout << key << "\n";
-			if( send(fd, comand, strlen(comand), 0) == -1){
-				cout << "Error al enviar mensaje\n";
-			} else {
-				sleep(1000);
-				send(fd, key, strlen(key), 0);
-			}
-			//comando para que el client espere respuesta del servidor aqui
-		}
-		
-		if(cmd.find("update")==0){
-			strcpy(buffer, cmd.c_str());
-			char * temp;
-			char * comand;
-			char * key;
-			char * value;
-			temp = strtok(buffer, "(");
-			comand = temp;
-			temp = strtok(NULL, ",");
-			key = temp;
-			temp = strtok(NULL, ")");
-			value = temp;			
-			if( send(fd, comand, strlen(comand), 0) == -1){
-				cout << "Error al enviar mensaje\n";
-			} else {
-				sleep(1000);
-				send(fd, key, strlen(key), 0);
-				sleep(1000);
-				send(fd, value, strlen(value), 0);
-			}
-			//comando para que el client espere respuesta del servidor aqui
-		}
 		
 	}
 
